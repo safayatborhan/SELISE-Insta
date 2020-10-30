@@ -2,6 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using InstaAPI.InstaMapper;
+using InstaAPI.Models;
+using InstaAPI.Repository;
+using InstaAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace InstaAPI
@@ -26,11 +32,16 @@ namespace InstaAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IMongoClient, MongoClient>(s =>
-            {
-                var uri = s.GetRequiredService<IConfiguration>()["MongoUri"];
-                return new MongoClient(uri);
-            });
+            services.Configure<SeliseInstaDatabaseSettings>(
+                Configuration.GetSection(nameof(SeliseInstaDatabaseSettings)));
+
+            services.AddSingleton<ISeliseInstaDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<SeliseInstaDatabaseSettings>>().Value);
+
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
+
+            services.AddAutoMapper(typeof(InstaMappings));
+
             services.AddControllers();
         }
 

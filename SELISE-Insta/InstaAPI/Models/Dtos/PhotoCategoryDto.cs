@@ -5,15 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InstaAPI.Models
+namespace InstaAPI.Models.Dtos
 {
-    [BsonIgnoreExtraElements]
-    public class PhotoCategory
+    public class PhotoCategoryDto
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        [BsonElement("category_name")]
         public string CategoryName { get; set; }
     }
 }
