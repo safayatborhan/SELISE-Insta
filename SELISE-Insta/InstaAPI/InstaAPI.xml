@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InstaAPI</name>
+    </assembly>
+    <members>
+        <member name="M:InstaAPI.Controllers.PhotosController.GetPhotos">
+            <summary>
+            Gets list of photos.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:InstaAPI.Controllers.PhotosController.GetPhoto(System.String)">
+            <summary>
+            Gets individual photo
+            </summary>
+            <param name="photoId">The id of photo</param>
+            <returns></returns>
+        </member>
+        <member name="M:InstaAPI.Controllers.PhotosController.CreatePhoto(InstaAPI.Models.Dtos.PhotoDto)">
+            <summary>
+            Saves a single new photo and required information
+            </summary>
+            <param name="photoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:InstaAPI.Controllers.PhotosController.UpdatePhoto(System.String,InstaAPI.Models.Dtos.PhotoDto)">
+            <summary>
+            Updates a single photo information
+            </summary>
+            <param name="photoId"></param>
+            <param name="photoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:InstaAPI.Controllers.PhotosController.DeletePhoto(System.String)">
+            <summary>
+            Deletes single photo
+            </summary>
+            <param name="photoId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

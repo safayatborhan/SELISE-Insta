@@ -13,6 +13,7 @@ namespace InstaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class PhotosController : ControllerBase
     {
         private readonly IPhotoRepository _photoRepository;
@@ -24,7 +25,12 @@ namespace InstaAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets list of photos.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PhotoDto>))]
         public IActionResult GetPhotos()
         {
             var photos = _photoRepository.GetPhotos();
@@ -36,7 +42,15 @@ namespace InstaAPI.Controllers
             return Ok(photosDto);
         }
 
+        /// <summary>
+        /// Gets individual photo
+        /// </summary>
+        /// <param name="photoId">The id of photo</param>
+        /// <returns></returns>
         [HttpGet("{photoId}", Name = "GetPhoto")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type =typeof(PhotoDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public IActionResult GetPhoto(string photoId)
         {
             var photo = _photoRepository.GetPhoto(photoId);
@@ -48,8 +62,16 @@ namespace InstaAPI.Controllers
             return Ok(photoDto);
         }
 
+        /// <summary>
+        /// Saves a single new photo and required information
+        /// </summary>
+        /// <param name="photoDto"></param>
+        /// <returns></returns>
         [HttpPost]
-        public IActionResult CreateNationalPark([FromBody] PhotoDto photoDto)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PhotoDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult CreatePhoto([FromBody] PhotoDto photoDto)
         {
             if(photoDto == null)
             {
@@ -68,7 +90,16 @@ namespace InstaAPI.Controllers
             return CreatedAtRoute("GetPhoto", new { photoId = photo.Id }, photo);
         }
 
+        /// <summary>
+        /// Updates a single photo information
+        /// </summary>
+        /// <param name="photoId"></param>
+        /// <param name="photoDto"></param>
+        /// <returns></returns>
         [HttpPatch("{photoId}", Name = "UpdatePhoto")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]        
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdatePhoto(string photoId, [FromBody] PhotoDto photoDto)
         {
             if (photoDto == null || photoId != photoDto.Id)
@@ -88,7 +119,15 @@ namespace InstaAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes single photo
+        /// </summary>
+        /// <param name="photoId"></param>
+        /// <returns></returns>
         [HttpDelete("{photoId}", Name = "DeletePhoto")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeletePhoto(string photoId)
         {
             if (!_photoRepository.PhotoExists(photoId))

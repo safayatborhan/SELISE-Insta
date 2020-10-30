@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using InstaAPI.InstaMapper;
@@ -16,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 
 namespace InstaAPI
@@ -42,6 +45,18 @@ namespace InstaAPI
 
             services.AddAutoMapper(typeof(InstaMappings));
 
+            services.AddSwaggerGen(options => {
+                options.SwaggerDoc("SELISEInstaAPISpec",
+                new OpenApiInfo()
+                {
+                    Title = "Insta API",
+                    Version = "1"
+                });
+                var xmlCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
+                options.IncludeXmlComments(cmlCommentsFullPath);
+            });
+
             services.AddControllers();
         }
 
@@ -54,6 +69,14 @@ namespace InstaAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("swagger/SELISEInstaAPISpec/swagger.json", "SELISE-Insta API");
+                options.RoutePrefix = "";
+            });
 
             app.UseRouting();
 
