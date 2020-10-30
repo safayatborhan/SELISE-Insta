@@ -43,5 +43,11 @@ namespace InstaAPI.Repository
         {
             _photoCollection.ReplaceOne(p => p.Id == photo.Id, photo);
         }
+
+        public bool PhotoExists(string id)
+        {
+            var photo = GetPhoto(id);
+            return photo == null ? false : true; 
+        }
     }
 }

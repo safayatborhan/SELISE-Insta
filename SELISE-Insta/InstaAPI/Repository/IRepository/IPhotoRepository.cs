@@ -14,5 +14,6 @@ namespace InstaAPI.Repository.IRepository
         void CreatePhoto(Photo photo);
         void UpdatePhoto(Photo photo);
         void DeletePhoto(Photo photo);
+        bool PhotoExists(string id);
     }
 }
