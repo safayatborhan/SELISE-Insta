@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
-namespace InstaAPI
+namespace MongoPractice
 {
     public class Startup
     {
