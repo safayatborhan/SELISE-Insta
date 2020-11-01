@@ -9,6 +9,7 @@ using InstaAPI.InstaMapper;
 using InstaAPI.Models;
 using InstaAPI.Repository;
 using InstaAPI.Repository.IRepository;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -56,6 +57,8 @@ namespace InstaAPI
                 var cmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
                 options.IncludeXmlComments(cmlCommentsFullPath);
             });
+
+            services.AddMediatR(typeof(Startup));
 
             services.AddControllers();
         }

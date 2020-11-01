@@ -1,5 +1,6 @@
 ﻿using InstaAPI.Models;
 using InstaAPI.Models.Dtos;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace InstaAPI.Repository.IRepository
 {
     public interface IPhotoRepository
     {
-        ICollection<Photo> GetPhotos();
-        Photo GetPhoto(string photoId);
-        void CreatePhoto(Photo photo);
-        void UpdatePhoto(Photo photo);
-        void DeletePhoto(Photo photo);
+        Task<List<Photo>> GetPhotos();
+        Task<Photo> GetPhoto(string photoId);
+        Task CreatePhoto(Photo photo);
+        Task UpdatePhoto(Photo photo);
+        Task DeletePhoto(Photo photo);
         bool PhotoExists(string id);
     }
 }

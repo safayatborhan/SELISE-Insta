@@ -1,5 +1,6 @@
 ﻿using InstaAPI.Models;
 using InstaAPI.Repository.IRepository;
+using MediatR;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -17,31 +18,31 @@ namespace InstaAPI.Repository
             var database = client.GetDatabase(settings.DatabaseName);
             _photoCollection = database.GetCollection<Photo>(settings.PhotosCollectionName);
         }
-        public void CreatePhoto(Photo photo)
+        public Task CreatePhoto(Photo photo)
         {
-            _photoCollection.InsertOne(photo);
+            return _photoCollection.InsertOneAsync(photo);
         }
 
-        public void DeletePhoto(Photo photo)
+        public Task DeletePhoto(Photo photo)
         {
-            _photoCollection.DeleteOne(p => p.Id == photo.Id);
+            return _photoCollection.DeleteOneAsync(p => p.Id == photo.Id);
         }
 
-        public Photo GetPhoto(string photoId)
+        public Task<Photo> GetPhoto(string photoId)
         {
-            var photo = _photoCollection.Find<Photo>(p => p.Id == photoId).FirstOrDefault();
+            var photo = _photoCollection.FindAsync<Photo>(p => p.Id == photoId).Result.FirstOrDefaultAsync();
             return photo;
         }
 
-        public ICollection<Photo> GetPhotos()
+        public Task<List<Photo>> GetPhotos()
         {
-            var photos = _photoCollection.Find(p => true).ToList();
+            var photos = _photoCollection.FindAsync(p => true).Result.ToListAsync();
             return photos;
         }
 
-        public void UpdatePhoto(Photo photo)
+        public Task UpdatePhoto(Photo photo)
         {
-            _photoCollection.ReplaceOne(p => p.Id == photo.Id, photo);
+            return _photoCollection.ReplaceOneAsync(p => p.Id == photo.Id, photo);
         }
 
         public bool PhotoExists(string id)

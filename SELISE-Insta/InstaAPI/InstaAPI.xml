@@ -17,19 +17,19 @@
             <param name="photoId">The id of photo</param>
             <returns></returns>
         </member>
-        <member name="M:InstaAPI.Controllers.PhotosController.CreatePhoto(InstaAPI.Models.Dtos.PhotoDto)">
+        <member name="M:InstaAPI.Controllers.PhotosController.CreatePhoto(InstaAPI.Commands.CreatePhotoCommand)">
             <summary>
             Saves a single new photo and required information
             </summary>
-            <param name="photoDto"></param>
+            <param name="command"></param>
             <returns></returns>
         </member>
-        <member name="M:InstaAPI.Controllers.PhotosController.UpdatePhoto(System.String,InstaAPI.Models.Dtos.PhotoDto)">
+        <member name="M:InstaAPI.Controllers.PhotosController.UpdatePhoto(System.String,InstaAPI.Commands.UpdatePhotoCommand)">
             <summary>
             Updates a single photo information
             </summary>
             <param name="photoId"></param>
-            <param name="photoDto"></param>
+            <param name="command"></param>
             <returns></returns>
         </member>
         <member name="M:InstaAPI.Controllers.PhotosController.DeletePhoto(System.String)">

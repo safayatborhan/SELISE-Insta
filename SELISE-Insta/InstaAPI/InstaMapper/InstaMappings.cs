@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InstaAPI.Commands;
 using InstaAPI.Models;
 using InstaAPI.Models.Dtos;
 using System;
@@ -14,6 +15,8 @@ namespace InstaAPI.InstaMapper
         {
             CreateMap<Photo, PhotoDto>().ReverseMap();
             CreateMap<PhotoCategory, PhotoCategoryDto>().ReverseMap();
+            CreateMap<Photo, CreatePhotoCommand>().ReverseMap();
+            CreateMap<Photo, UpdatePhotoCommand>().ReverseMap();
         }
     }
 }
