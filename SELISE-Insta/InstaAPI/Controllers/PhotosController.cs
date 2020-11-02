@@ -19,14 +19,10 @@ namespace InstaAPI.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class PhotosController : ControllerBase
     {
-        private readonly IPhotoRepository _photoRepository;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public PhotosController(IPhotoRepository photoRepository, IMapper mapper, IMediator mediator)
+        public PhotosController(IMediator mediator)
         {
-            _photoRepository = photoRepository;
-            _mapper = mapper;
             _mediator = mediator;
         }
 
@@ -41,13 +37,6 @@ namespace InstaAPI.Controllers
             var query = new GetAllPhotosQuery();
             var result = await _mediator.Send(query);
             return Ok(result);
-            //var photos = _photoRepository.GetPhotos();
-            //var photosDto = new List<PhotoDto>();
-            //foreach(var photo in photos)
-            //{
-            //    photosDto.Add(_mapper.Map<PhotoDto>(photo));
-            //}
-            //return Ok(photosDto);
         }
 
         /// <summary>
@@ -64,14 +53,6 @@ namespace InstaAPI.Controllers
             var query = new GetPhotoQuery(photoId);
             var result = await _mediator.Send(query);
             return result != null ? (IActionResult) Ok(result) : NotFound();
-
-            //var photo = _photoRepository.GetPhoto(photoId);
-            //if(photo == null)
-            //{
-            //    return NotFound();
-            //}
-            //var photoDto = _mapper.Map<PhotoDto>(photo);
-            //return Ok(photoDto);
         }
 
         /// <summary>
@@ -91,21 +72,6 @@ namespace InstaAPI.Controllers
                 return BadRequest(ModelState);
             }
             return CreatedAtRoute("GetPhoto", new { photoId = result.Id }, result);
-            //if (photoDto == null)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-            //var photo = _mapper.Map<Photo>(photoDto);
-            //try
-            //{
-            //    _photoRepository.CreatePhoto(photo);
-            //}
-            //catch(Exception ex)
-            //{
-            //    ModelState.AddModelError("", $"Something went wrong when saving this record");
-            //    return StatusCode(500, ModelState);
-            //}
-            //return CreatedAtRoute("GetPhoto", new { photoId = photo.Id }, photo);
         }
 
         /// <summary>
@@ -126,17 +92,6 @@ namespace InstaAPI.Controllers
                 return BadRequest(ModelState);
             }
             return NoContent();
-            //var photo = _mapper.Map<Photo>(photoDto);
-            //try
-            //{
-            //    _photoRepository.UpdatePhoto(photo);
-            //}
-            //catch (Exception ex)
-            //{
-            //    ModelState.AddModelError("", $"Something went wrong when updating this record");
-            //    return StatusCode(500, ModelState);
-            //}
-            //return NoContent();
         }
 
         /// <summary>
@@ -153,22 +108,6 @@ namespace InstaAPI.Controllers
             var query = new DeletePhotoQuery(photoId);
             var result = await _mediator.Send(query);
             return result != null ? (IActionResult)NoContent() : NotFound();
-
-            if (!_photoRepository.PhotoExists(photoId))
-            {
-                return NotFound();
-            }
-            var photo = _photoRepository.GetPhoto(photoId);
-            try
-            {
-                //_photoRepository.DeletePhoto(photo);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", $"Something went wrong when deleting this record");
-                return StatusCode(500, ModelState);
-            }
-            return NoContent();
         }
     }
 }
